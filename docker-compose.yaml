@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  coding-ninja-system-api:
+    container_name: chill-music-api
+    image: chill-music-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    depends_on:
+      - postgres
+  postgres:
+    container_name: chill-music-db
+    image: postgres:13.5
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./db_data/:/var/lib/postgresql/data/
+    ports:
+      - '5432:5432'
